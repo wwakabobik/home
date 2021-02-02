@@ -28,7 +28,7 @@ class LoRaRcvCont(LoRa):
         print(bytes(payload).decode("utf-8", 'ignore'))
         self.set_mode(MODE.SLEEP)
         # We got the data, force sleep for a while to skip repeats
-        sleep(240)
+        sleep(1)
         self.reset_ptr_rx()
         self.set_mode(MODE.RXCONT)
 

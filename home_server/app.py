@@ -4,14 +4,14 @@ from datetime import datetime
 
 from flask import Flask, jsonify, request, abort
 
-from .db.db import init_app
-from .db.weather_station import store_weather_data
-from .pages.index import index_page
-from .pages.weather_station.dashboard import dashboard_page
-from .pages.weather_station.single_page import single_page
-from .pages.weather_station.single_data_page import single_data_page
-from .pages.weather_station.compare_page import compare_page
-from .pages.weather_station.send_data import send_data
+from db.db import init_app
+from db.weather_station import store_weather_data
+from pages.index import index_page
+from pages.weather_station.dashboard import dashboard_page
+from pages.weather_station.single_page import single_page
+from pages.weather_station.single_data_page import single_data_page
+from pages.weather_station.compare_page import compare_page
+from pages.weather_station.send_data import send_data
 
 
 app = Flask(__name__, template_folder='templates')
