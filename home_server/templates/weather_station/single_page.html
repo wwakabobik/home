@@ -1,0 +1,47 @@
+<HTML>
+    <HEAD>
+        <TITLE>H.O.M.E. - {{param}} for {{period}}</TITLE>
+    </HEAD>
+    <BODY>
+        <H1 align="center">{{period}} data for {{param}}</H1>
+        {{ offline_fig|safe }}
+        <DIV align="center">
+            <form action="/single_page" method="post" id="page_selector">
+                <b>Param:</b>
+                <select name="param" form="page_selector">
+                    <option value="temperature_in">Temperature in</option>
+                    <option value="temperature_out">Temperature out</option>
+                    <option value="humidity_in">Humidity in</option>
+                    <option value="humidity_out">Humidity out</option>
+                    <option value="dew_point_in">Dew point in</option>
+                    <option value="dew_point_out">Dew point out</option>
+                    <option value="pressure">Atmospheric pressure</option>
+                </select>
+                <b>Period:</b>
+                <select name="period" form="page_selector">
+                    <option value="hour">Hour</option>
+                    <option value="day">Day</option>
+                    <option value="week">Week</option>
+                    <option value="month">Month</option>
+                    <option value="year">Year</option>
+                    <option value="week_average">Week average</option>
+                    <option value="month_average">Month average</option>
+                    <option value="year_average">Year average</option>
+                    <option value="week_night_average">Week night average</option>
+                    <option value="month_night_average">Month night average</option>
+                    <option value="year_night_average">Year night average</option>
+                    <option value="week_day_average">Week night average</option>
+                    <option value="month_day_average">Month night average</option>
+                    <option value="year_day_average">Year night average</option>
+                </select>
+                <input type="submit" name="submit" value="Show new data">
+                <BR>
+            </form>
+            <form action="/compare_page" method="post">
+                <input type="submit" name="compare" value="To compare">
+            </form>
+        <BR>
+            <a href="/single_data_page?param={{param}}&period={{period}}">Data in table view</a>
+        </DIV>
+    </BODY>
+</HTML>

@@ -1,0 +1,14 @@
+<HTML>
+    <HEAD>
+        <TITLE>H.O.M.E. - {{param}} data for {{period}}</TITLE>
+    </HEAD>
+    <BODY>
+        <DIV align="center">
+            <H1>{{param}} data for {{period}}</H1>
+        </DIV>
+        {{ data|safe }}
+        <DIV align="center">
+            <a href="/single_page?param={{param}}&period={{period}}">Go back to single page</a>
+        </DIV>
+    </BODY>
+</HTML>

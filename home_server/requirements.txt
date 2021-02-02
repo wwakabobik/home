@@ -1,0 +1,8 @@
+flask==1.1.2
+plotly==4.14.3
+wunderground-pws==0.1
+openweather-pws==1.0.1
+RPi.GPIO==0.7.0
+spidev==3.5
+pyLoRa==0.3.1
+requests==2.25.1

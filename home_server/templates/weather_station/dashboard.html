@@ -1,0 +1,245 @@
+<HTML>
+<HEAD>
+    <TITLE>H.O.M.E. - Weather Dashboard</TITLE>
+    <meta http-equiv="refresh" content="300">
+</HEAD>
+<BODY>
+    <DIV align="center">
+        <TABLE width=80% align="center" border="1px" cellspacing="0" cellpadding="2">
+            <TR align="center" valign="middle">
+                <TD valign="middle"><H2>Inside</H2></TD>
+                <TD valign="middle" colspan="2"><H2>Outside</H2></TD>
+            </TR>
+            <TR align="center" valign="bottom">
+                <TD colspan="3" valign="middle">
+                    <H3>Temperature</H3>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD>
+                    <a href="single_page?param=temperature_in&period=day" style="font-size: 60px; text-decoration: none">{{ temperature_in }}</a>
+                    {% if temperature_in > prev_temperature_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago was colder: {{ prev_temperature_in }}">
+                    {% elif temperature_in < prev_temperature_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago was warmer: {{ prev_temperature_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if temperature_in > last_day_temperature_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Day ago was colder: {{ last_day_temperature_in }}">
+                    {% elif temperature_in < last_day_temperature_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Day ago was warmer: {{ last_day_temperature_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if temperature_in > last_year_temperature_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago was colder: {{ last_year_temperature_in }}">
+                    {% elif temperature_in < last_year_temperature_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago was warmer: {{ last_year_temperature_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+                </TD>
+                <TD colspan="2">
+                    <a href="single_page?param=temperature_out&period=day" style="font-size: 60px; text-decoration: none">{{ temperature_out }}</a>
+                    {% if temperature_out > prev_temperature_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago was colder: {{ prev_temperature_out }}">
+                    {% elif temperature_out < prev_temperature_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago was warmer: {{ prev_temperature_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if temperature_out > last_day_temperature_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Day ago was colder: {{ last_day_temperature_out }}">
+                    {% elif temperature_out < last_day_temperature_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Day ago was warmer: {{ last_day_temperature_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if temperature_out > last_year_temperature_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago was colder: {{ last_year_temperature_out }}">
+                    {% elif temperature_out < last_year_temperature_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago was warmer: {{ last_year_temperature_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+
+                    <FONT color="grey"> ({{ wu_temp }})</FONT>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD colspan="3"  valign="middle">
+                    <H3>Humidity</H3>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD valign="middle">
+                    <a href="single_page?param=humidity_in&period=day" style="font-size: 60px; text-decoration: none">{{ humidity_in }}</a>
+                    {% if humidity_in > prev_humidity_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago was drier: {{ prev_humidity_in }}">
+                    {% elif humidity_in < prev_humidity_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago was humid: {{ prev_humidity_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if humidity_in > last_day_humidity_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Day ago was drier: {{ last_day_humidity_in }}">
+                    {% elif humidity_in < last_day_humidity_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Day ago was warmer: {{ last_day_humidity_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if humidity_in > last_year_humidity_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago was drier: {{ last_year_humidity_in }}">
+                    {% elif humidity_in < last_year_humidity_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago was warmer: {{ last_year_humidity_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+                </TD>
+                <TD valign="middle" colspan="2">
+                    <a href="single_page?param=humidity_out&period=day" style="font-size: 60px; text-decoration: none">{{ humidity_out }}</a>
+                    {% if humidity_out > prev_humidity_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago was drier: {{ prev_humidity_out }}">
+                    {% elif humidity_out < prev_humidity_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago was humid: {{ prev_humidity_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if humidity_out > last_day_humidity_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago was drier: {{ last_day_humidity_out }}">
+                    {% elif humidity_out < last_day_humidity_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago was humid: {{ last_day_humidity_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if humidity_out > last_year_humidity_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago was drier: {{ last_year_humidity_out }}">
+                    {% elif humidity_out < last_year_humidity_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago was humid: {{ last_year_humidity_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+
+                    <FONT color="grey"> ({{ wu_humidity }})</FONT>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD colspan="3"><H3>Pressure</H3></TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD colspan="3" valign="middle">
+                    <a href="single_page?param=pressure&period=day" style="font-size: 60px; text-decoration: none">{{ pressure }}</a>
+                    {% if pressure > prev_pressure %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes pressure was lower: {{ prev_pressure }}">
+                    {% elif pressure < prev_pressure %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago pressure was higher: {{ prev_pressure }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if pressure > last_day_pressure %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Day ago pressure was lower: {{ last_day_pressure }}">
+                    {% elif pressure < last_day_pressure %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Day ago pressure was higher: {{ last_day_pressure }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if pressure > last_year_pressure %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago pressure was lower: {{ last_year_pressure }}">
+                    {% elif pressure < last_year_pressure %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago pressure was higher: {{ last_year_pressure }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+
+                    <FONT color="grey"> ({{ wu_pressure }})</FONT>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD colspan="3"><H3>Dew Point</H3></TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD colspan="1" valign="middle">
+                    <a href="single_page?param=dew_point_in&period=day" style="font-size: 60px; text-decoration: none">{{ dew_point_in }}</a>
+                    {% if dew_point_in > prev_dew_point_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago dew_point was lower: {{ prev_dew_point_in }}">
+                    {% elif dew_point_in < prev_dew_point_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago dew_point was higher: {{ prev_dew_point_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if dew_point_in > last_day_dew_point_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Day ago dew_point was lower: {{ last_day_dew_point_in }}">
+                    {% elif dew_point_in < last_day_dew_point_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Day ago dew_point was higher: {{ last_day_dew_point_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if dew_point_in > last_year_dew_point_in %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago dew_point was lower: {{ last_year_dew_point_in }}">
+                    {% elif dew_point_in < last_year_dew_point_in %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago dew_point was higher: {{ last_year_dew_point_in }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+                </TD>
+                <TD colspan="2" valign="middle">
+                    <a href="single_page?param=dew_point_out&period=day" style="font-size: 60px; text-decoration: none">{{ dew_point_out }}</a>
+                    {% if dew_point_out > prev_dew_point_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago dew_point was lower: {{ prev_dew_point_out }}">
+                    {% elif dew_point_out < prev_dew_point_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago dew_point was higher: {{ prev_dew_point_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if dew_point_out > last_day_dew_point_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Day ago dew_point was lower: {{ last_day_dew_point_out }}">
+                    {% elif dew_point_out < last_day_dew_point_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Day ago dew_point was higher: {{ last_day_dew_point_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if dew_point_out > last_year_dew_point_out %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago dew_point was lower: {{ last_year_dew_point_out }}">
+                    {% elif dew_point_out < last_year_dew_point_out %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago dew_point was higher: {{ last_year_dew_point_out }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+
+                    <FONT color="grey"> ({{ wu_dew_point }})</FONT>
+                </TD>
+            </TR>
+            <TR align="center" valign="bottom">
+                <TD colspan="3" valign="middle">
+                    <H3>Wind</H3>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle"><H3>Speed</H3></TD>
+                <TD align="center" valign="middle"><H3>Gust</H3></TD>
+                <TD align="center" valign="middle"><H3>Heading</H3></TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle"><FONT color="grey"> ({{ wu_wind_speed }})</FONT></TD>
+                <TD align="center" valign="middle"><FONT color="grey"> ({{ wu_wind_gust }})</FONT></TD>
+                <TD align="center" valign="middle"><FONT color="grey"> ({{ wu_wind_direction }}°{{ wu_wind_heading }})</FONT></TD>
+            </TR>
+        </TABLE>
+    </DIV>
+</BODY>
+</HTML>
