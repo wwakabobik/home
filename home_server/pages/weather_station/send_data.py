@@ -26,6 +26,8 @@ def prepare_wu_format(data, timestamp=None):
     payload += "&dewptf=" + str(celsius_to_fahrenheit(data['dew_point']))
     payload += "&heatindex=" + str(celsius_to_fahrenheit(heat_index(temp=data['temperature'], hum=data['humidity'])))
     payload += "&humidex=" + str(celsius_to_fahrenheit(humidex(t=data['temperature'], d=data['dew_point'])))
+    payload += "&precip=" + str(data['precip'])
+    payload += "&uv" + str(data['uv'])
     return payload
 
 

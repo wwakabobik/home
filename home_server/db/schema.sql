@@ -5,17 +5,19 @@ DROP TABLE IF EXISTS power_data;
 CREATE TABLE weather_data (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ts TIMESTAMP NOT NULL,
+    unix_ts INTEGER NOT NULL,
     meas_type INTEGER NOT NULL,
     temperature DOUBLE,
     humidity DOUBLE,
     pressure DOUBLE,
-    dew_point DOUBLE
+    dew_point DOUBLE,
+    uv DOUBLE
 );
 
 CREATE TABLE wind_data (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ts TIMESTAMP NOT NULL,
-    unix_tx INTEGER NOT NULL,
+    unix_ts INTEGER NOT NULL,
     avg_rps DOUBLE,
     max_rps DOUBLE,
     min_rps DOUBLE,
@@ -35,7 +37,7 @@ CREATE TABLE wind_data (
 CREATE TABLE power_data (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ts TIMESTAMP NOT NULL,
-    unix_tx INTEGER NOT NULL,
+    unix_ts INTEGER NOT NULL,
     avg_voltage DOUBLE,
     avg_current DOUBLE,
     avg_power DOUBLE,

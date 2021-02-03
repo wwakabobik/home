@@ -1,14 +1,16 @@
 /* ***************************************************************************
  * This sketch contains weather station logic                                *
  *                                                                           *
- * Sketch uses Arduino Nano controller, and it contains limited amount of    *
+ * Sketch uses ESP8288 controller, and it contains limited amount of         *
  * RAM. Due to that - to achieve stability - at least 20% of RAM should be   *
  * free and debug serial output is commented-out in this sketch.             *
  *                                                                           *
  * Flight controller contains:                                               *
  *    - ESP8266 (CH340g with WiFI), AC-DC supply unit,                       *
  *      BME280 barometer/thermometer/hydrometer.                             *
+ *      ML8511 UV sensor, FC-37 rain sensor                                  *
  *                                                                           *
+ * Note: this sketch is designed for outdoor use                             *
  *                                                                           *
  * Logic:                                                                    *
  *    1) Init BME280 sensor                                                  *
@@ -24,6 +26,8 @@
  *****************************************************************************/
 
 #define DEBUG
+#define RAIN_SENSOR
+//#define UV_SENSOR
 
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
@@ -42,6 +46,15 @@ float correction_temperature = -1.5;  // calibration addition for temperature
 float correction_pressure = 14;       // calibration addition for pressure
 float correction_humidity = 0;        // calibration addition for humidity
 
+// UV sensor globals
+#ifdef UV_SENSOR
+int UV_PIN = A0;
+#endif
+
+// Rain sensor
+#ifdef RAIN_SENSOR
+const int RAIN_SENSOR_PIN = A0;
+#endif
 
 // Format consts
 String delimiter = ",";
@@ -70,6 +83,7 @@ void setup()
      Serial.begin(115200);
      Serial.println("Started init");
      init_BME();
+     init_UV_sensor();
      init_WiFi();
 }
 
@@ -108,14 +122,15 @@ void init_BME()
 }
 
 
-#ifdef ODISPLAY
-void init_oled()
+void init_UV_sensor()
 {
-    myOLED.begin();
-    myOLED.setFont(SmallFont);
-    Serial.println("OLED initialized");
+    pinMode(UV_PIN, INPUT);
 }
-#endif
+
+void init_rain_sensor()
+{
+    pinMode(RAIN_SENSOR_PIN, INPUT);
+}
 
 
 /* WiFi functions */
@@ -229,6 +244,24 @@ float get_dew_point()
     return dp;
 }
 
+
+#ifdef UV_SENSOR
+void get_uv_level()
+{
+    int uv_level = averageAnalogRead(UV_PIN);
+    float uv_intensity = mapfloat(uv_level, 0.99, 2.8, 0.0, 15.0);
+    return uv_intensity;
+}
+#endif
+
+#ifdef RAIN_SENSOR
+void get_rain_level()
+{
+    int rain_level = averageAnalogRead(RAIN_SENSOR_PIN);
+    return rain_level;
+}
+#endif
+
 /* Format functions */
 
 String get_csv_data()
@@ -238,6 +271,14 @@ String get_csv_data()
     ret_string += delimiter + String(get_humidity());
     ret_string += delimiter + String(get_pressure());
     ret_string += delimiter + String(get_dew_point());
+    #ifdef UV_SENSOR
+    ret_string += delimiter + "0";
+    ret_string += delimiter + String(get_uv_level());
+    #endif
+    #ifdef RAIN_SENSOR
+    ret_string += delimiter + String(get_rain_level());
+    ret_string += delimiter + "0";
+    #endif
     return ret_string;
 }
 

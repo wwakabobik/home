@@ -1,9 +1,11 @@
 from time import sleep
+
+import requests
 from SX127x.LoRa import *
 from SX127x.board_config import BOARD
 
 
-BOARD.setup()
+endpoint = "http://0.0.0.0:80//api/v1";
 
 
 class LoRaRcvCont(LoRa):
@@ -22,30 +24,38 @@ class LoRaRcvCont(LoRa):
             sys.stdout.flush()
 
     def on_rx_done(self):
-        print("\nReceived: ")
+        print("\nReceived: ")  # DEBUG!!!!
         self.clear_irq_flags(RxDone=1)
         payload = self.read_payload(nocheck=True)
-        print(bytes(payload).decode("utf-8", 'ignore'))
+        print(payload)  # DEBUG!!!!
+        formatted_payload = bytes(payload).decode("utf-8", 'ignore')
+        print(formatted_payload)  # DEBUG!!!!
+        status = self.send_to_home(formatted_payload)
+        if status:
+            sleep(1)  # we got the data, force sleep for a while to skip repeats
         self.set_mode(MODE.SLEEP)
-        # We got the data, force sleep for a while to skip repeats
-        sleep(1)
         self.reset_ptr_rx()
         self.set_mode(MODE.RXCONT)
 
+    def send_to_home(self, payload):
+        if str(payload[:2]) == '0,':
+            requests.post(url=f'{endpoint}/add_wind_data', json={'data': payload})
+        elif str(payload[:2]) == '1,':
+            requests.post(url=f'{endpoint}/add_power_data', json={'data': payload})
+        else:
+            print("Garbage collected, ignoring")  # debug
+            status = 1
+        return status
 
-lora = LoRaRcvCont(verbose=False)
-lora.set_mode(MODE.STDBY)
 
-# Medium Range  Defaults after init are 434.0MHz, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on 13 dBm
-lora.set_pa_config(pa_select=1)
-try:
-    lora.start()
-except KeyboardInterrupt:
-    sys.stdout.flush()
-    print("")
-    sys.stderr.write("KeyboardInterrupt\n")
-finally:
-    sys.stdout.flush()
-    print("")
-    lora.set_mode(MODE.SLEEP)
-    BOARD.teardown()
+def run_lora():
+    BOARD.setup()
+    lora = LoRaRcvCont(verbose=False)
+    lora.set_mode(MODE.STDBY)
+    # Medium Range  Defaults after init are 434.0MHz, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on 13 dBm
+    lora.set_pa_config(pa_select=1)
+    try:
+        lora.start()
+    finally:
+        lora.set_mode(MODE.SLEEP)
+        BOARD.teardown()

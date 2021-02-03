@@ -5,7 +5,9 @@ data_update_period = 5
 
 def store_weather_data(data):
     connection = get_db()
-    sql = f'''INSERT INTO weather_data(ts,meas_type,temperature,humidity,pressure,dew_point) VALUES({data});'''
+    sql = f'''INSERT INTO weather_data(ts,unix_ts,meas_type,
+                                       temperature,humidity,pressure,dew_point,
+                                       precip,uv) VALUES({data});'''
     cur = connection.cursor()
     cur.execute(sql)
     connection.commit()
