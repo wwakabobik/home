@@ -548,13 +548,23 @@ String get_all_data_as_csv()  // get all data and format it as CSV
     wd = get_rps_data_per_period(CYCLE_MILLIS*MEAS_PERIODS, MEAS_PERIODS);
     heading = get_heading();
     
-    return_string = DEVICE_ID + delimiter +String(millis()) + delimiter + String(wd.average_rps) + delimiter + String(wd.max_rps) + delimiter + String(wd.min_rps);
-    return_string += delimiter + String(rps_to_ms(wd.average_rps)) + delimiter + String(rps_to_ms(wd.max_rps)) + delimiter + String(rps_to_ms(wd.min_rps));
-    return_string += delimiter + String(ms_to_kmh(rps_to_ms(wd.average_rps))) + delimiter + String(ms_to_kmh(rps_to_ms(wd.max_rps))) + delimiter + String(ms_to_kmh(rps_to_ms(wd.min_rps)));
-    return_string += delimiter + String(ms_to_knots(rps_to_ms(wd.average_rps))) + delimiter + String(ms_to_knots(rps_to_ms(wd.max_rps))) + delimiter + String(ms_to_knots(rps_to_ms(wd.min_rps)));
-    return_string += delimiter + String(heading) + delimiter + heading_to_abbr(heading);
+    return_string = DEVICE_ID;
+    return_string += delimiter + String(wd.average_rps);
+    return_string += delimiter + String(wd.max_rps);
+    return_string += delimiter + String(wd.min_rps);
+    return_string += delimiter + String(rps_to_ms(wd.average_rps));
+    return_string += delimiter + String(rps_to_ms(wd.max_rps));
+    return_string += delimiter + String(rps_to_ms(wd.min_rps));
+    return_string += delimiter + String(ms_to_kmh(rps_to_ms(wd.average_rps)));
+    return_string += delimiter + String(ms_to_kmh(rps_to_ms(wd.max_rps)));
+    return_string += delimiter + String(ms_to_kmh(rps_to_ms(wd.min_rps)));
+    return_string += delimiter + String(ms_to_knots(rps_to_ms(wd.average_rps)));
+    return_string += delimiter + String(ms_to_knots(rps_to_ms(wd.max_rps)));
+    return_string += delimiter + String(ms_to_knots(rps_to_ms(wd.min_rps)));
+    return_string += delimiter + String(heading);
+    return_string += delimiter + heading_to_abbr(heading);
     #ifdef RTC_CLOCK
-    return_string += get_time_stamp();
+    return_string += delimeter + get_time_stamp();
     #endif
 
     return return_string;

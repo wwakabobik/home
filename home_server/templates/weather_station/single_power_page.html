@@ -1,0 +1,35 @@
+<HTML>
+    <HEAD>
+        <TITLE>H.O.M.E. - {{param}} for {{period}}</TITLE>
+    </HEAD>
+    <BODY>
+        <H1 align="center">{{period}} data for {{param}}</H1>
+        {{ offline_fig|safe }}
+        <DIV align="center">
+            <form action="/single_power_page" method="post" id="page_selector">
+                <b>Param:</b>
+                <select name="param" form="page_selector">
+                    <option value="avg_voltage">Voltage</option>
+                    <option value="avg_current">Current</option>
+                    <option value="avg_power">Power</option>
+                    <option value="avg_consumption">Consumption</option>
+                </select>
+                <b>Period:</b>
+                <select name="period" form="page_selector">
+                    <option value="hour">Hour</option>
+                    <option value="day">Day</option>
+                    <option value="week">Week</option>
+                    <option value="month">Month</option>
+                    <option value="year">Year</option>
+                </select>
+                <input type="submit" name="submit" value="Show new data">
+                <BR>
+            </form>
+            <form action="/compare_page" method="post">
+                <input type="submit" name="compare" value="To compare">
+            </form>
+        <BR>
+            <a href="/single_data_page?table=power_data&param={{param}}&period={{period}}">Data in table view</a>
+        </DIV>
+    </BODY>
+</HTML>

@@ -1,14 +1,15 @@
 #!/usr/bin/env python3.7
 
 from datetime import datetime
+from time import time
 
 from flask import Flask, jsonify, request, abort
 
 from db.db import init_app
-from db.weather_station import store_weather_data
+from db.queries import store_weather_data
 from pages.index import index_page
 from pages.weather_station.dashboard import dashboard_page
-from pages.weather_station.single_page import single_page
+from pages.weather_station.single_page import single_weather_page, single_wind_page, single_power_page
 from pages.weather_station.single_data_page import single_data_page
 from pages.weather_station.compare_page import compare_page
 from pages.weather_station.send_data import send_data
@@ -18,12 +19,36 @@ app = Flask(__name__, template_folder='templates')
 
 
 @app.route('/api/v1/add_weather_data', methods=['POST'])
-def store_in_db():
+def store_weather_data():
     if not request.json:
         abort(400)
     timestamp = str(datetime.now())
     data = request.json.get('data', "")
     db_data = f'"{timestamp}", {data}'
+    store_weather_data(db_data)
+    return jsonify({'data': db_data}), 201
+
+
+@app.route('/api/v1/add_power_data', methods=['POST'])
+def store_power_data():
+    if not request.json:
+        abort(400)
+    timestamp = str(datetime.now())
+    unix_timestamp = int(time())
+    data = request.json.get('data', "")[:2]
+    db_data = f'"{timestamp}", {unix_timestamp}, {data}'
+    store_weather_data(db_data)
+    return jsonify({'data': db_data}), 201
+
+
+@app.route('/api/v1/add_wind_data', methods=['POST'])
+def store_wind_data():
+    if not request.json:
+        abort(400)
+    timestamp = str(datetime.now())
+    unix_timestamp = int(time())
+    data = request.json.get('data', "")[:2]
+    db_data = f'"{timestamp}", {unix_timestamp}, {data}'
     store_weather_data(db_data)
     return jsonify({'data': db_data}), 201
 
@@ -44,25 +69,54 @@ def dashboard():
     return dashboard_page()
 
 
-@app.route('/single_page')
-def single():
+@app.route('/single_weather_page')
+def single_weather_page_via_url():
     period = request.args.get('period')
     param = request.args.get('param')
-    return single_page(param=param, period=period)
+    return single_weather_page(param=param, period=period)
 
 
-@app.route('/single_page', methods=['POST'])
-def single_via_post():
+@app.route('/single_wind_page')
+def single_wind_page_via_url():
+    period = request.args.get('period')
+    param = request.args.get('param')
+    return single_weather_page(param=param, period=period)
+
+
+@app.route('/single_power_page')
+def single_power_page_via_url():
+    period = request.args.get('period')
+    param = request.args.get('param')
+    return single_weather_page(param=param, period=period)
+
+
+@app.route('/single_weather_page', methods=['POST'])
+def single_weather_page_via_post():
     period = request.form['period']
     param = request.form['param']
-    return single_page(param=param, period=period)
+    return single_weather_page(param=param, period=period)
+
+
+@app.route('/single_wind_page', methods=['POST'])
+def single_wind_page_via_post():
+    period = request.form['period']
+    param = request.form['param']
+    return single_wind_page(param=param, period=period)
+
+
+@app.route('/single_power_page', methods=['POST'])
+def single_power_page_via_post():
+    period = request.form['period']
+    param = request.form['param']
+    return single_power_page(param=param, period=period)
 
 
 @app.route('/single_data_page')
 def single_data():
+    table = request.args.get('table')
     period = request.args.get('period')
     param = request.args.get('param')
-    return single_data_page(param=param, period=period)
+    return single_data_page(table=table, param=param, period=period)
 
 
 @app.route('/compare_page', methods=['POST'])

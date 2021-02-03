@@ -1,0 +1,43 @@
+<HTML>
+    <HEAD>
+        <TITLE>H.O.M.E. - {{param}} for {{period}}</TITLE>
+    </HEAD>
+    <BODY>
+        <H1 align="center">{{period}} data for {{param}}</H1>
+        {{ offline_fig|safe }}
+        <DIV align="center">
+            <form action="/single_wind_page" method="post" id="page_selector">
+                <b>Param:</b>
+                <select name="param" form="page_selector">
+                    <option value="avg_rps">Average RPS</option>
+                    <option value="max_rps">Maximum RPS</option>
+                    <option value="min_rps">Minimum RPS</option>
+                    <option value="avg_ms">Wind speed (ms)</option>
+                    <option value="max_mx">Wind gust max (ms)</option>
+                    <option value="min_ms">Wind gust min (ms)</option>
+                    <option value="avg_kmh">Wind speed (km/h)</option>
+                    <option value="max_kmh">Wind gust max (km/h)</option>
+                    <option value="min_kmh">Wind gust min (km/h)</option>
+                    <option value="avg_knots">Wind speed (knots)</option>
+                    <option value="max_knots">Wind gust max (knots)</option>
+                    <option value="min_knots">Wind gust min (knots)</option>
+                </select>
+                <b>Period:</b>
+                <select name="period" form="page_selector">
+                    <option value="hour">Hour</option>
+                    <option value="day">Day</option>
+                    <option value="week">Week</option>
+                    <option value="month">Month</option>
+                    <option value="year">Year</option>
+                </select>
+                <input type="submit" name="submit" value="Show new data">
+                <BR>
+            </form>
+            <form action="/compare_page" method="post">
+                <input type="submit" name="compare" value="To compare">
+            </form>
+        <BR>
+            <a href="/single_data_page?table=wind_data&param={{param}}&period={{period}}">Data in table view</a>
+        </DIV>
+    </BODY>
+</HTML>

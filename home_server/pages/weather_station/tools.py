@@ -2,10 +2,17 @@ import math
 
 from plotly import graph_objects, offline
 
-from db.weather_station import data_update_period, get_last_series_measurement
+from db.queries import data_update_period, get_last_series_measurement
 
 
-units = {'temperature': '°C', 'humidity': '%', 'pressure': 'mm Hg', 'dew_point': '°C'}
+units = {'temperature': '°C', 'humidity': '%', 'pressure': 'mm Hg', 'dew_point': '°C',
+         'avg_voltage': 'V', 'avg_current': 'A', 'avg_power': 'W', 'avg_consumption': 'W/h',
+         'avg_rps': 'rps', 'max_rps': 'rps', 'min_rps': 'rps',
+         'avg_ms' : 'm/s', 'max_ms': 'm/s', 'min_ms': 'm/s',
+         'avg_kmh': 'km/h', 'max_kmh': 'km/h', 'min_kmh': 'km/h',
+         'avg_knots': 'knots', 'max_knots': 'knots', 'min_knots': 'knots',
+         'heading': '°', 'precip': 'mm', 'uv': 'mW/cm^2'
+         }
 
 
 def convert_period(period):
@@ -24,23 +31,27 @@ def convert_period(period):
     return num_period
 
 
-def convert_param(param):
-    if "_in" in param:
-        meas_type = 0
-        fparam = param[:-3]
-    elif "_out" in param:
-        meas_type = 1
-        fparam = param[:-4]
+def convert_param(param, table):
+    if table == 'weather_data':
+        if "_in" in param:
+            meas_type = 0
+            fparam = param[:-3]
+        elif "_out" in param:
+            meas_type = 1
+            fparam = param[:-4]
+        else:
+            meas_type = 0
+            fparam = param
     else:
-        meas_type=0
-        fparam=param
+        fparam = param
+        meas_type = None
     return fparam, meas_type
 
 
-def generate_scatter(param, period, height=None, width=None):
-    fparam, meas_type = convert_param(param)
+def generate_scatter(table, param, period, height=None, width=None):
+    fparam, meas_type = convert_param(param, table)
     num_period = convert_period(period)
-    x, y = get_last_series_measurement(period=num_period, param=fparam, meas_type=meas_type)
+    x, y = get_last_series_measurement(table=table, period=num_period, param=fparam, meas_type=meas_type)
     line_chart1 = graph_objects.Scatter(x=x, y=y)
     lay1 = graph_objects.Layout(
         title=f'{param}',
