@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+    <TITLE>H.O.M.E. - Power Dashboard</TITLE>
+    <meta http-equiv="refresh" content="300">
+</HEAD>
+<BODY>
+    <DIV align="center">
+        <TABLE width=80% align="center" border="1px" cellspacing="0" cellpadding="2">
+            <TR align="center" valign="middle">
+                <TD valign="middle"><H2>Inside</H2></TD>
+                <TD valign="middle" colspan="2"><H2>Outside</H2></TD>
+            </TR>
+            <TR align="center" valign="bottom">
+                <TD colspan="2" valign="middle">
+                    <H2>Power data</H2>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <H3>Voltage</H3>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_power_page?param=avg_voltage&period=day" style="font-size: 40px; text-decoration: none">{{ avg_voltage }} V</a>
+                <TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <H3>Current</H3>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_power_page?param=avg_voltage&period=day" style="font-size: 40px; text-decoration: none">{{ avg_current }} A</a>
+                <TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <H3>Power</H3>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_power_page?param=avg_voltage&period=day" style="font-size: 40px; text-decoration: none">{{ avg_power }} W</a>
+                <TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <H3>Consumption per minute</H3>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_power_page?param=avg_voltage&period=day" style="font-size: 40px; text-decoration: none">{{ avg_consumption }} W/m</a>
+                <TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <H3>Consumption per minute</H3>
+                </TD>
+                <TD align="center" valign="middle">
+                    <FONT style="font-size: 40px; text-decoration: none">{{ avg_consumption_kwh }} kW/h</FONT>
+                <TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <H3>Wind speed</H3>
+                </TD>
+                <TD align="center" valign="middle">
+                    <FONT style="font-size: 40px; text-decoration: none">{{ wind_speed }} km/h</FONT>
+                <TD>
+            </TR>
+        </TABLE>
+    </DIV>
+</BODY>
+</HTML>

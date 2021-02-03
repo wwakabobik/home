@@ -17,7 +17,7 @@
             </TR>
             <TR align="center" valign="middle">
                 <TD>
-                    <a href="single_page?param=temperature_in&period=day" style="font-size: 60px; text-decoration: none">{{ temperature_in }}</a>
+                    <a href="single_weather_page?param=temperature_in&period=day" style="font-size: 60px; text-decoration: none">{{ temperature_in }}</a>
                     {% if temperature_in > prev_temperature_in %}
                     <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago was colder: {{ prev_temperature_in }}">
                     {% elif temperature_in < prev_temperature_in %}
@@ -43,7 +43,7 @@
                     {% endif %}
                 </TD>
                 <TD colspan="2">
-                    <a href="single_page?param=temperature_out&period=day" style="font-size: 60px; text-decoration: none">{{ temperature_out }}</a>
+                    <a href="single_weather_page?param=temperature_out&period=day" style="font-size: 60px; text-decoration: none">{{ temperature_out }}</a>
                     {% if temperature_out > prev_temperature_out %}
                     <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago was colder: {{ prev_temperature_out }}">
                     {% elif temperature_out < prev_temperature_out %}
@@ -78,7 +78,7 @@
             </TR>
             <TR align="center" valign="middle">
                 <TD valign="middle">
-                    <a href="single_page?param=humidity_in&period=day" style="font-size: 60px; text-decoration: none">{{ humidity_in }}</a>
+                    <a href="single_weather_page?param=humidity_in&period=day" style="font-size: 60px; text-decoration: none">{{ humidity_in }}</a>
                     {% if humidity_in > prev_humidity_in %}
                     <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago was drier: {{ prev_humidity_in }}">
                     {% elif humidity_in < prev_humidity_in %}
@@ -104,7 +104,7 @@
                     {% endif %}
                 </TD>
                 <TD valign="middle" colspan="2">
-                    <a href="single_page?param=humidity_out&period=day" style="font-size: 60px; text-decoration: none">{{ humidity_out }}</a>
+                    <a href="single_weather_page?param=humidity_out&period=day" style="font-size: 60px; text-decoration: none">{{ humidity_out }}</a>
                     {% if humidity_out > prev_humidity_out %}
                     <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago was drier: {{ prev_humidity_out }}">
                     {% elif humidity_out < prev_humidity_out %}
@@ -137,7 +137,7 @@
             </TR>
             <TR align="center" valign="middle">
                 <TD colspan="3" valign="middle">
-                    <a href="single_page?param=pressure&period=day" style="font-size: 60px; text-decoration: none">{{ pressure }}</a>
+                    <a href="single_weather_page?param=pressure&period=day" style="font-size: 60px; text-decoration: none">{{ pressure }}</a>
                     {% if pressure > prev_pressure %}
                     <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes pressure was lower: {{ prev_pressure }}">
                     {% elif pressure < prev_pressure %}
@@ -170,7 +170,7 @@
             </TR>
             <TR align="center" valign="middle">
                 <TD colspan="1" valign="middle">
-                    <a href="single_page?param=dew_point_in&period=day" style="font-size: 60px; text-decoration: none">{{ dew_point_in }}</a>
+                    <a href="single_weather_page?param=dew_point_in&period=day" style="font-size: 60px; text-decoration: none">{{ dew_point_in }}</a>
                     {% if dew_point_in > prev_dew_point_in %}
                     <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago dew_point was lower: {{ prev_dew_point_in }}">
                     {% elif dew_point_in < prev_dew_point_in %}
@@ -196,7 +196,7 @@
                     {% endif %}
                 </TD>
                 <TD colspan="2" valign="middle">
-                    <a href="single_page?param=dew_point_out&period=day" style="font-size: 60px; text-decoration: none">{{ dew_point_out }}</a>
+                    <a href="single_weather_page?param=dew_point_out&period=day" style="font-size: 60px; text-decoration: none">{{ dew_point_out }}</a>
                     {% if dew_point_out > prev_dew_point_out %}
                     <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago dew_point was lower: {{ prev_dew_point_out }}">
                     {% elif dew_point_out < prev_dew_point_out %}
@@ -235,9 +235,64 @@
                 <TD align="center" valign="middle"><H3>Heading</H3></TD>
             </TR>
             <TR align="center" valign="middle">
-                <TD align="center" valign="middle"><FONT color="grey"> ({{ wu_wind_speed }})</FONT></TD>
-                <TD align="center" valign="middle"><FONT color="grey"> ({{ wu_wind_gust }})</FONT></TD>
-                <TD align="center" valign="middle"><FONT color="grey"> ({{ wu_wind_direction }}°{{ wu_wind_heading }})</FONT></TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_kmh&period=day" style="font-size: 60px; text-decoration: none">{{ current_wind_speed }}</a>
+                    {% if current_wind_speed > prev_wind_speed %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago wind was weaker: {{ prev_wind_speed }}">
+                    {% elif current_wind_speed < prev_wind_speed %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago wind was stronger: {{ prev_wind_speed }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if current_wind_speed > last_day_wind_speed %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Day ago dew_point was lower: {{ last_day_wind_speed }}">
+                    {% elif current_wind_speed < last_day_wind_speed %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Day ago dew_point was higher: {{ last_day_wind_speed }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if current_wind_speed > last_year_wind_speed %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago dew_point was lower: {{ last_year_wind_speed }}">
+                    {% elif current_wind_speed < last_year_wind_speed %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago dew_point was higher: {{ last_year_wind_speed }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+                    
+                    <FONT color="grey"> ({{ wu_wind_speed }})</FONT></TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=max_kmh&period=day" style="font-size: 60px; text-decoration: none">{{ current_wind_gust }}</a>
+                    {% if current_wind_gust > prev_wind_gust %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Five minutes ago wind was weaker: {{ prev_wind_gust }}">
+                    {% elif current_wind_gust < prev_wind_gust %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Five minutes ago wind was stronger: {{ prev_wind_gust }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last measure">
+                    {% endif %}
+
+                    {% if current_wind_gust > last_day_wind_gust %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Day ago dew_point was lower: {{ last_day_wind_gust }}">
+                    {% elif current_wind_gust < last_day_wind_gust %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Day ago dew_point was higher: {{ last_day_wind_gust }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last day">
+                    {% endif %}
+
+                    {% if current_wind_gust > last_year_wind_gust %}
+                    <IMG src="static/arrow_green.png" height="40" width="10" title="Year ago dew_point was lower: {{ last_year_wind_gust }}">
+                    {% elif current_wind_gust < last_year_wind_gust %}
+                    <IMG src="static/arrow_red.png" height="40" width="10" title="Year ago dew_point was higher: {{ last_year_wind_gust }}">
+                    {% else %}
+                    <IMG src="static/arrow_grey.png" height="40" width="10" title="No changes since last year">
+                    {% endif %}
+
+                    <FONT color="grey"> ({{ wu_wind_gust }})</FONT></TD>
+                <TD align="center" valign="middle">
+                    <font style="font-size: 60px; text-decoration: none">{{ wind_heading }}°{{ wind_heading_abbr }}</font>
+
+                    <FONT color="grey"> ({{ wu_wind_direction }}°{{ wu_wind_heading }})</FONT></TD>
             </TR>
         </TABLE>
     </DIV>

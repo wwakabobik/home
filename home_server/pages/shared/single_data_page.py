@@ -1,7 +1,7 @@
 from flask import render_template
 
 from db.queries import get_last_series_measurement
-from pages.weather_station.tools import convert_param, convert_period
+from pages.shared.tools import convert_param, convert_period
 
 
 def single_data_page(table, period, param):

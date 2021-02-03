@@ -2,6 +2,7 @@ from flask import render_template
 from wunderground_pws import WUndergroundAPI, units
 
 from db.queries import get_one_measurement, data_update_period, get_last_measurement_pack
+from pages.shared.tools import deg_to_heading
 from secure_data import wu_api_key, wu_reference_station_id
 
 
@@ -11,12 +12,6 @@ wu = WUndergroundAPI(
     default_station_id=wu_reference_station_id,
     units=units.METRIC_SI_UNITS,
 )
-
-
-def deg_to_heading(degrees=0):
-    dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
-    ix = round(degrees / (360. / len(dirs)))
-    return dirs[ix % len(dirs)]
 
 
 def dashboard_page_fast():
@@ -65,8 +60,8 @@ def dashboard_page_fast():
                            last_year_dew_point_out=last_year_data_out['dew_point'],
                            current_wind_speed=current_wind_data['avg_kmh'],
                            current_wind_gust=current_wind_data['max_kmh'],
-                           previous_wind_speed=previous_wind_data['avg_kmh'],
-                           prevous_wind_gust=previous_wind_data['max_kmh'],
+                           prev_wind_speed=previous_wind_data['avg_kmh'],
+                           prev_wind_gust=previous_wind_data['max_kmh'],
                            last_day_wind_speed=last_day_wind_data['avg_kmh'],
                            last_day_wind_gust=last_day_wind_data['max_kmh'],
                            last_year_wind_speed=last_year_wind_data['avg_kmh'],
@@ -171,8 +166,8 @@ def dashboard_page():
                            last_year_dew_point_out=last_year_dew_point_out,
                            current_wind_speed=wind_speed,
                            current_wind_gust=wind_gust,
-                           previous_wind_speed=prev_wind_speed,
-                           prevous_wind_gust=prev_wind_gust,
+                           prev_wind_speed=prev_wind_speed,
+                           prev_wind_gust=prev_wind_gust,
                            last_day_wind_speed=last_day_wind_speed,
                            last_day_wind_gust=last_day_wind_gust,
                            last_year_wind_speed=last_year_wind_speed,

@@ -1,6 +1,6 @@
 from flask import render_template
 
-from pages.weather_station.tools import generate_scatter
+from pages.shared.tools import generate_scatter
 
 
 def single_weather_page(param, period):

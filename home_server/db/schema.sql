@@ -24,7 +24,7 @@ CREATE TABLE wind_data (
     min_ms DOUBLE,
     avg_kmh DOUBLE,
     max_kmh DOUBLE,
-    min_knh DOUBLE,
+    min_kmh DOUBLE,
     avg_knots DOUBLE,
     max_knots DOUBLE,
     min_knots DOUBLE,

@@ -1,0 +1,99 @@
+<HTML>
+<HEAD>
+    <TITLE>H.O.M.E. - Wind Dashboard</TITLE>
+    <meta http-equiv="refresh" content="300">
+</HEAD>
+<BODY>
+    <DIV align="center">
+        <TABLE width=80% align="center" border="1px" cellspacing="0" cellpadding="2">
+            <TR align="center" valign="middle">
+                <TD valign="middle"><H2>Inside</H2></TD>
+                <TD valign="middle" colspan="2"><H2>Outside</H2></TD>
+            </TR>
+            <TR align="center" valign="bottom">
+                <TD colspan="4" valign="middle">
+                    <H2>Wind data</H2>
+                </TD>
+            </TR>
+            <TR>
+                <TD align="center" valign="middle">
+                    <H3>Scale</H3>
+                <TD/>
+                <TD align="center" valign="middle">
+                    <H3>Average</H3>
+                </TD>
+                <TD align="center" valign="middle">
+                    <H3>Maximum</H3>
+                </TD>
+                <TD align="center" valign="middle">
+                    <H3>Minimum</H3>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <FONT style="font-size: 40px; text-decoration: none"><b>RPS</b></FONT>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_rps&period=day" style="font-size: 40px; text-decoration: none">{{ avg_rps }}</a>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=max_rps&period=day" style="font-size: 40px; text-decoration: none">{{ max_rps }}</a>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_rps&period=day" style="font-size: 40px; text-decoration: none">{{ min_rps }}</a>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <FONT style="font-size: 40px; text-decoration: none"><b>m/s</b></FONT>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_rps&period=day" style="font-size: 40px; text-decoration: none">{{ avg_ms }}</a>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=max_rps&period=day" style="font-size: 40px; text-decoration: none">{{ max_ms }}</a>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_rps&period=day" style="font-size: 40px; text-decoration: none">{{ min_ms }}</a>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <FONT style="font-size: 40px; text-decoration: none"><b>km/s</b></FONT>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_rps&period=day" style="font-size: 40px; text-decoration: none">{{ avg_kmh }}</a>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=max_rps&period=day" style="font-size: 40px; text-decoration: none">{{ max_kmh }}</a>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_rps&period=day" style="font-size: 40px; text-decoration: none">{{ min_kmh }}</a>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <FONT style="font-size: 40px; text-decoration: none"><b>knots</b></FONT>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_rps&period=day" style="font-size: 40px; text-decoration: none">{{ avg_knots }}</a>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=max_rps&period=day" style="font-size: 40px; text-decoration: none">{{ max_knots }}</a>
+                </TD>
+                <TD align="center" valign="middle">
+                    <a href="single_wind_page?param=avg_rps&period=day" style="font-size: 40px; text-decoration: none">{{ min_knots }}</a>
+                </TD>
+            </TR>
+            <TR align="center" valign="middle">
+                <TD align="center" valign="middle">
+                    <FONT style="font-size: 40px; text-decoration: none"><b>Heading</b></FONT>
+                </TD>
+                <TD align="center" valign="middle" colspan="3">
+                    <FONT style="font-size: 40px; text-decoration: none">{{ heading }}°{{ heading_abbr }}</FONT>
+                </TD>
+            </TR>
+        </TABLE>
+    </DIV>
+</BODY>
+</HTML>

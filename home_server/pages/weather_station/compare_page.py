@@ -1,6 +1,6 @@
 from flask import render_template
 
-from pages.weather_station.tools import generate_scatter
+from pages.shared.tools import generate_scatter
 
 
 def compare_page(table1, table2, param1, param2, period):

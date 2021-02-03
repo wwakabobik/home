@@ -9,8 +9,10 @@ from db.db import init_app
 from db.queries import store_weather_data
 from pages.index import index_page
 from pages.weather_station.dashboard import dashboard_page
-from pages.weather_station.single_page import single_weather_page, single_wind_page, single_power_page
-from pages.weather_station.single_data_page import single_data_page
+from page.weather_station.wind import wind_page
+from page.power_management.power import power_page
+from pages.shared.single_page import single_weather_page, single_wind_page, single_power_page
+from pages.shared.single_data_page import single_data_page
 from pages.weather_station.compare_page import compare_page
 from pages.weather_station.send_data import send_data
 
@@ -67,6 +69,16 @@ def index():
 @app.route('/dashboard')
 def dashboard():
     return dashboard_page()
+
+
+@app.route('/wind')
+def dashboard():
+    return wind_page()
+
+
+@app.route('/power')
+def dashboard():
+    return power_page()
 
 
 @app.route('/single_weather_page')

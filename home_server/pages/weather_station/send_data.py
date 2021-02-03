@@ -3,8 +3,7 @@ from openweather_pws import Station
 
 from db.queries import get_last_measurement_pack
 from secure_data import wu_station_id, wu_station_pwd, pwsw_station_id, pwsw_api_key, ow_station_id, ow_api_key
-from pages.weather_station.tools import celsius_to_fahrenheit, fahrenheit_to_celsius
-from pages.weather_station.tools import mmhg_to_baromin, heat_index, humidex
+from pages.shared.tools import celsius_to_fahrenheit, fahrenheit_to_celsius, mmhg_to_baromin, heat_index, humidex
 
 
 # Send data to services

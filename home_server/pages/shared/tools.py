@@ -82,6 +82,12 @@ def mmhg_to_baromin(mmhg):
     return float(mmhg)/25.4
 
 
+def deg_to_heading(degrees=0):
+    dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+    ix = round(degrees / (360. / len(dirs)))
+    return dirs[ix % len(dirs)]
+
+
 def heat_index(temp, hum):
     fahrenheit = celsius_to_fahrenheit(temp)
     # Creating multiples of 'fahrenheit' & 'hum' values for the coefficients
