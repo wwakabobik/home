@@ -1,6 +1,9 @@
 import math
+from os import getcwd
+from time import sleep, time
 
 from plotly import graph_objects, offline
+from picamera import PiCamera
 
 from db.queries import data_update_period, get_last_series_measurement
 
@@ -132,3 +135,14 @@ def humidex(t, d):
     hum_idex = temperature + h - kelvin
 
     return hum_idex
+
+
+def take_photo():
+    camera = PiCamera()
+    camera.resolution = (1800, 1200)  # lower resolution to fit in 1mb limitation
+    camera.start_preview()
+    sleep(5)
+    image = f'{getcwd()}/camera/image_{int(time())}.jpg'
+    camera.capture(image)
+    camera.stop_preview()
+    return image
