@@ -1,4 +1,6 @@
 from ftplib import FTP
+from shutil import copyfile
+from os import getcwd
 
 import requests
 from openweather_pws import Station
@@ -20,6 +22,7 @@ def send_data():
     response += str(send_data_to_pwsw(wu_data))
     response += str(send_data_to_ow(data))
     send_image_to_wu(image)
+    copyfile(image, f'{getcwd()}/camera/image.jpg')
     return response
 
 
