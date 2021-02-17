@@ -4,12 +4,14 @@ from os import getcwd
 
 import requests
 from openweather_pws import Station
+from narodmon import Narodmon
 
 from db.queries import get_last_measurement_pack
 from secure_data import wu_station_id, wu_station_pwd, wu_cam_id, wu_cam_pwd
 from secure_data import pwsw_station_id, pwsw_api_key, ow_station_id, ow_api_key
+from secure_data import narodmon_mac, narodmon_owner, narodmon_name, latitude, latitude, longitude, altitude
 from pages.shared.tools import celsius_to_fahrenheit, fahrenheit_to_celsius, mmhg_to_baromin, heat_index, humidex
-from pages.shared.tools import take_photo
+from pages.shared.tools import take_photo, baromin_to_mmhg
 
 
 # Send data to services
@@ -21,6 +23,7 @@ def send_data():
     response = str(send_data_to_wu(wu_data))
     response += str(send_data_to_pwsw(wu_data))
     response += str(send_data_to_ow(data))
+    response += str(send_data_to_nardmon(data))
     send_image_to_wu(image)
     copyfile(image, f'{getcwd()}/camera/image.jpg')
     return response
@@ -56,9 +59,9 @@ def send_image_to_wu(image):
 
 
 def send_data_to_pwsw(data):
-    wu_url = "http://www.pwsweather.com/pwsupdate/pwsupdate.php?"
-    wu_creds = "ID=" + pwsw_station_id + "&PASSWORD=" + pwsw_api_key
-    response = requests.get(f'{wu_url}{wu_creds}{data}')
+    pwsw_url = "http://www.pwsweather.com/pwsupdate/pwsupdate.php?"
+    pwsw_creds = "ID=" + pwsw_station_id + "&PASSWORD=" + pwsw_api_key
+    response = requests.get(f'{pwsw_url}{pwsw_creds}{data}')
     return response.content
 
 
@@ -69,4 +72,16 @@ def send_data_to_ow(data):
                                     heat_index=fahrenheit_to_celsius(heat_index(temp=data['temperature'],
                                                                                 hum=data['humidity'])),
                                     humidex=humidex(t=data['temperature'], d=data['dew_point']))
+    return response
+
+
+def send_data_to_nardmon(data):
+    nm = Narodmon(mac=narodmon_mac, name=narodmon_name, owner=narodmon_owner,
+                  lat=latitude, lon=longitude, alt=altitude)
+    temperature = nm.via_json.prepare_sensor_data(id_in="TEMPC", value=fahrenheit_to_celsius(data['temperature']))
+    pressure = nm.via_json.prepare_sensor_data(id_in="MMHG", value=baromin_to_mmhg(data['pressure']))
+    humidity = nm.via_json.prepare_sensor_data(id_in="HUM", value=data['humidity'])
+    dew_point = nm.via_json.prepare_sensor_data(id_in="DEW", value=fahrenheit_to_celsius(data['dew_point']))
+    sensors = [temperature, pressure, humidity, dew_point]
+    response = nm.via_json.send_short_data(sensors=sensors)
     return response

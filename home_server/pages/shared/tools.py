@@ -85,6 +85,10 @@ def mmhg_to_baromin(mmhg):
     return float(mmhg)/25.4
 
 
+def baromin_to_mmhg(baromin):
+    return float(baromin*25.4)
+
+
 def deg_to_heading(degrees=0):
     dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
     ix = round(degrees / (360. / len(dirs)))
