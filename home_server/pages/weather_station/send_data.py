@@ -78,10 +78,10 @@ def send_data_to_ow(data):
 def send_data_to_nardmon(data):
     nm = Narodmon(mac=narodmon_mac, name=narodmon_name, owner=narodmon_owner,
                   lat=latitude, lon=longitude, alt=altitude)
-    temperature = nm.via_json.prepare_sensor_data(id_in="TEMPC", value=fahrenheit_to_celsius(data['temperature']))
-    pressure = nm.via_json.prepare_sensor_data(id_in="MMHG", value=baromin_to_mmhg(data['pressure']))
+    temperature = nm.via_json.prepare_sensor_data(id_in="TEMPC", value=data['temperature'])
+    pressure = nm.via_json.prepare_sensor_data(id_in="MMHG", value=(data['pressure']))
     humidity = nm.via_json.prepare_sensor_data(id_in="HUM", value=data['humidity'])
-    dew_point = nm.via_json.prepare_sensor_data(id_in="DEW", value=fahrenheit_to_celsius(data['dew_point']))
+    dew_point = nm.via_json.prepare_sensor_data(id_in="DEW", value=data['dew_point'])
     sensors = [temperature, pressure, humidity, dew_point]
     response = nm.via_json.send_short_data(sensors=sensors)
     return response
