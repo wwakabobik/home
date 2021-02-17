@@ -5,7 +5,7 @@ from SX127x.LoRa import *
 from SX127x.board_config import BOARD
 
 
-endpoint = "http://0.0.0.0:80//api/v1";
+endpoint = "http://0.0.0.0:80/api/v1"
 
 
 class LoRaRcvCont(LoRa):
@@ -24,12 +24,9 @@ class LoRaRcvCont(LoRa):
             sys.stdout.flush()
 
     def on_rx_done(self):
-        print("\nReceived: ")  # DEBUG!!!!
         self.clear_irq_flags(RxDone=1)
         payload = self.read_payload(nocheck=True)
-        print(payload)  # DEBUG!!!!
         formatted_payload = bytes(payload).decode("utf-8", 'ignore')
-        print(formatted_payload)  # DEBUG!!!!
         status = self.send_to_home(formatted_payload)
         if status:
             sleep(1)  # we got the data, force sleep for a while to skip repeats
@@ -54,6 +51,8 @@ def run_lora():
     lora.set_mode(MODE.STDBY)
     # Medium Range  Defaults after init are 434.0MHz, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on 13 dBm
     lora.set_pa_config(pa_select=1)
+    assert (lora.get_agc_auto_on() == 1)
+
     try:
         lora.start()
     finally:
