@@ -32,7 +32,7 @@
 
 /* Globals section */
 
-// Vlotage sensors consts
+// Voltage sensors consts
 const float R1 = 30000.0;
 const float R2 = 7500.0;
 const int VOLTAGE_PIN = A1;

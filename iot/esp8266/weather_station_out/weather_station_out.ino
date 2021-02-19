@@ -215,8 +215,6 @@ float get_temperature()
 {
     sensors_event_t temp_event, pressure_event, humidity_event;
     bme_temp->getEvent(&temp_event);
-    bme_pressure->getEvent(&pressure_event);
-    bme_humidity->getEvent(&humidity_event);
     return temp_event.temperature + correction_temperature;
 }
 
@@ -245,7 +243,7 @@ float get_dew_point()
 }
 
 
-#ifdef UV_SENSOR
+#ifdef UV_ANALOG_SENSOR
 void get_uv_level()
 {
     int uv_level = averageAnalogRead(UV_PIN);

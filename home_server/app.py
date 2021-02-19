@@ -8,7 +8,7 @@ from db.db import init_app
 from lora_reciever import run_lora
 
 
-app = Flask(__name__, template_folder='templates')  # fistly, start Flask
+app = Flask(__name__, template_folder='templates')  # firstly, start Flask
 
 # import all routes
 import routes.api

@@ -85,3 +85,16 @@ def send_data_to_nardmon(data):
     sensors = [temperature, pressure, humidity, dew_point]
     response = nm.via_json.send_short_data(sensors=sensors)
     return response
+
+
+def send_data_to_informer():
+    data_in = get_last_measurement_pack('weather_data', '0', '0')
+    data_out = get_last_measurement_pack('weather_data', '0', '1')
+    pressure = int((data_in['pressure']+data_out['pressure'])/2)
+    formatted_string = f"IN: T={data_in['temperature']}*C, " \
+                       f"H={data_in['humidity']}% | " \
+                       f"OUT: T={data_out['temperature']}*C, " \
+                       f"H={data_out['humidity']}%, " \
+                       f"DP={data_out['dew_point']}*C | " \
+                       f"P={pressure} mmhg"
+    return formatted_string
