@@ -118,16 +118,6 @@ void init_BME()
 }
 
 
-#ifdef ODISPLAY
-void init_oled()
-{
-    myOLED.begin();
-    myOLED.setFont(SmallFont);
-    Serial.println("OLED initialized");
-}
-#endif
-
-
 /* WiFi functions */
 
 void connect_to_WiFi()
