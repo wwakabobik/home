@@ -119,6 +119,7 @@ void loop()
 
 void init_WiFi()
 {
+    disconnect_WiFi();
     connect_to_WiFi();
     #ifdef DEBUG
     Serial.println("Init WiFi OK");
