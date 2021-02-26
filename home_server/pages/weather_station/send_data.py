@@ -16,8 +16,7 @@ from pages.shared.tools import take_photo, baromin_to_mmhg
 
 
 def is_data_stale(timestamp):
-    db_time = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
-    delta = datetime.now() - db_time
+    delta = datetime.now() - timestamp
     return_val = True if delta.seconds < 600 else False
     return return_val
 
