@@ -77,11 +77,16 @@ const int max_retries = 5;  // number of retries to send packet
 // Packet send cooldown
 const long cooldown = 300000;
 
+// Reboot timeout
+const unsigned long reboot_timeout = 3600000;  // once per hour
+
 
 void setup()
 {
      Serial.begin(115200);
+     #ifdef DEBUG
      Serial.println("Started init");
+     #endif
      init_BME();
      init_UV_sensor();
      init_WiFi();
@@ -93,6 +98,10 @@ void loop()
     get_serial_data();
     #endif
     post_data();
+    if millis() > reboot_timeout
+    {
+        ESP.restart();
+    }
     delay(cooldown);
 }
 
@@ -227,9 +236,18 @@ float get_pressure()
 
 float get_humidity()
 {
+    float humidity;
     sensors_event_t humidity_event;
     bme_humidity->getEvent(&humidity_event);
-    return humidity_event.relative_humidity + correction_humidity;
+    if ((humidity_event.relative_humidity + correction_humidity) > 100.0) // if correction is wrong, get raw sensor val
+    {
+        humidity = humidity_event.relative_humidity;
+    }
+    else
+    {
+        humidity = humidity_event.relative_humidity + correction_humidity;
+    }
+    return humidity;
 }
 
 float get_dew_point()

@@ -27,7 +27,27 @@ def dashboard_page_fast():
     previous_wind_data = get_last_measurement_pack('weather_data', '1')
     last_day_wind_data = get_last_measurement_pack('weather_data', (float(60 * 24) / data_update_period) - 1)
     last_year_wind_data = get_last_measurement_pack('weather_data', (float(60 * 24 * 365) / data_update_period) - 1)
-    wu_current = wu.current()
+
+    # WU forecast data
+    try:
+        wu_current = wu.current()
+        wu_temp = wu_current['observations'][0]['metric_si']['temp']
+        wu_humidity = wu_current['observations'][0]['humidity']
+        wu_pressure = int(int(wu_current['observations'][0]['metric_si']['pressure'])/1.33)
+        wu_dew_point = wu_current['observations'][0]['metric_si']['dewpt']
+        wu_wind_speed = wu_current['observations'][0]['metric_si']['windSpeed']
+        wu_wind_gust = wu_current['observations'][0]['metric_si']['windGust']
+        wu_direction = wu_current['observations'][0]['winddir']
+        wu_heading = deg_to_heading(int(wu_direction))
+    except:
+        wu_temp = '?'
+        wu_humidity = '?'
+        wu_pressure = '?'
+        wu_dew_point = '?'
+        wu_wind_speed = '?'
+        wu_wind_gust = '?'
+        wu_direction = '?'
+        wu_heading = '?'
 
     return render_template("weather_station/weather_dashboard.html",
                            temperature_in=current_data_in['temperature'],
@@ -68,14 +88,14 @@ def dashboard_page_fast():
                            last_year_wind_gust=last_year_wind_data['max_kmh'],
                            wind_heading=current_wind_data['heading'],
                            wind_heading_abbr=deg_to_heading(current_wind_data['heading']),
-                           wu_temp=wu_current['observations'][0]['metric_si']['temp'],
-                           wu_humidity=wu_current['observations'][0]['humidity'],
-                           wu_pressure=int(int(wu_current['observations'][0]['metric_si']['pressure'])/1.33),
-                           wu_dew_point=wu_current['observations'][0]['metric_si']['dewpt'],
-                           wu_wind_speed=wu_current['observations'][0]['metric_si']['windSpeed'],
-                           wu_wind_gust=wu_current['observations'][0]['metric_si']['windGust'],
-                           wu_wind_direction=wu_current['observations'][0]['winddir'],
-                           wu_wind_heading=deg_to_heading(int(wu_current['observations'][0]['winddir']))
+                           wu_temp=wu_temp,
+                           wu_humidity=wu_humidity,
+                           wu_pressure=wu_pressure,
+                           wu_dew_point=wu_dew_point,
+                           wu_wind_speed=wu_wind_speed,
+                           wu_wind_gust=wu_wind_gust,
+                           wu_wind_direction=wu_direction,
+                           wu_wind_heading=wu_heading
                            )
 
 
@@ -125,15 +145,25 @@ def dashboard_page():
     # Wind heading
     wind_heading = get_one_measurement('wind_data', 'heading', '0')
     # WU forecast data
-    wu_current = wu.current()
-    wu_temp = wu_current['observations'][0]['metric_si']['temp']
-    wu_humidity = wu_current['observations'][0]['humidity']
-    wu_pressure = int(int(wu_current['observations'][0]['metric_si']['pressure'])/1.33)
-    wu_dew_point = wu_current['observations'][0]['metric_si']['dewpt']
-    wu_wind_speed = wu_current['observations'][0]['metric_si']['windSpeed']
-    wu_wind_gust = wu_current['observations'][0]['metric_si']['windGust']
-    wu_direction = wu_current['observations'][0]['winddir']
-    wu_heading = deg_to_heading(int(wu_direction))
+    try:
+        wu_current = wu.current()
+        wu_temp = wu_current['observations'][0]['metric_si']['temp']
+        wu_humidity = wu_current['observations'][0]['humidity']
+        wu_pressure = int(int(wu_current['observations'][0]['metric_si']['pressure'])/1.33)
+        wu_dew_point = wu_current['observations'][0]['metric_si']['dewpt']
+        wu_wind_speed = wu_current['observations'][0]['metric_si']['windSpeed']
+        wu_wind_gust = wu_current['observations'][0]['metric_si']['windGust']
+        wu_direction = wu_current['observations'][0]['winddir']
+        wu_heading = deg_to_heading(int(wu_direction))
+    except:
+        wu_temp = '?'
+        wu_humidity = '?'
+        wu_pressure = '?'
+        wu_dew_point = '?'
+        wu_wind_speed = '?'
+        wu_wind_gust = '?'
+        wu_direction = '?'
+        wu_heading = '?'
 
     return render_template("weather_station/weather_dashboard.html",
                            temperature_in=temperature_in,

@@ -1,6 +1,7 @@
 from ftplib import FTP
 from shutil import copyfile
 from os import getcwd
+from datetime import datetime
 
 import requests
 from openweather_pws import Station
@@ -14,16 +15,25 @@ from pages.shared.tools import celsius_to_fahrenheit, fahrenheit_to_celsius, mmh
 from pages.shared.tools import take_photo, baromin_to_mmhg
 
 
+def is_data_stale(timestamp):
+    db_time = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S.%f')
+    delta = datetime.now() - db_time
+    return_val = True if delta.seconds < 600 else False
+    return return_val
+
+
 # Send data to services
 
 def send_data():
     data = get_last_measurement_pack('0', '1')
     image = take_photo()
-    wu_data = prepare_wu_format(data=data)
-    response = str(send_data_to_wu(wu_data))
-    response += str(send_data_to_pwsw(wu_data))
-    response += str(send_data_to_ow(data))
-    response += str(send_data_to_nardmon(data))
+    response = 'ERROR: DATA OUTDATED'
+    if is_data_stale(timestamp=data['ts']):
+        wu_data = prepare_wu_format(data=data)
+        response = str(send_data_to_wu(wu_data))
+        response += str(send_data_to_pwsw(wu_data))
+        response += str(send_data_to_ow(data))
+        response += str(send_data_to_nardmon(data))
     send_image_to_wu(image)
     copyfile(image, f'{getcwd()}/camera/image.jpg')
     return response
@@ -89,12 +99,27 @@ def send_data_to_nardmon(data):
 
 def send_data_to_informer():
     data_in = get_last_measurement_pack('weather_data', '0', '0')
+
+    if is_data_stale(timestamp=data_in['ts']):
+        formatted_string = f"IN: T={data_in['temperature']}*C, " \
+                           f"H={data_in['humidity']}% | "
+        pressure = int(data_in['pressure'])
+    else:
+        formatted_string = "IN data outdated!"
+        pressure = None
+
     data_out = get_last_measurement_pack('weather_data', '0', '1')
-    pressure = int((data_in['pressure']+data_out['pressure'])/2)
-    formatted_string = f"IN: T={data_in['temperature']}*C, " \
-                       f"H={data_in['humidity']}% | " \
-                       f"OUT: T={data_out['temperature']}*C, " \
-                       f"H={data_out['humidity']}%, " \
-                       f"DP={data_out['dew_point']}*C | " \
-                       f"P={pressure} mmhg"
+    if is_data_stale(timestamp=data_out['ts']):
+        formatted_string = f"{formatted_string}" \
+                           f"OUT: T={data_out['temperature']}*C, " \
+                           f"H={data_out['humidity']}%, " \
+                           f"DP={data_out['dew_point']}*C | "
+        if pressure:
+            pressure = int((data_in['pressure'] + data_out['pressure']) / 2)
+    else:
+        formatted_string = f"{formatted_string}OUT data outdated! | "
+
+    if pressure:
+        formatted_string = f"{formatted_string}P={pressure} mmhg"
+
     return formatted_string

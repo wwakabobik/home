@@ -1,3 +1,30 @@
+/* ***************************************************************************
+ * This sketch contains weather station logic                                *
+ *                                                                           *
+ * Sketch uses ESP8288 controller, and it contains limited amount of         *
+ * RAM. Due to that - to achieve stability - at least 20% of RAM should be   *
+ * free and debug serial output is commented-out in this sketch.             *
+ *                                                                           *
+ * Flight controller contains:                                               *
+ *    - ESP8266 (CH340g with WiFI), AC-DC supply unit,                       *
+ *      OLED 128x64 display (SH1106) via I2C, RTC DS1302.                    *
+ *                                                                           *
+ *                                                                           *
+ * Logic:                                                                    *
+ *    1) Init OLED                                                           *
+ *    2) Init RTC                                                            *
+ *    3) Init Wi-fi                                                          *
+ *    3) Start looping:                                                      *
+ *       a) Check WiFi status, reconnect if needed                           *
+ *       b) Get data from sensor (string)                                    *
+ *       c) Display current time                                             *
+ *       d) Scroll data string on screen                                     *
+ *       e) Wait cooldown, go to "a"                                         *
+ *                                                                           *
+ * Sketch written by Iliya Vereshchagin 2021.                                *
+ *****************************************************************************/
+
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <Wire.h>
@@ -15,7 +42,7 @@ virtuabotixRTC myRTC(14, 12, 13);
 U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 u8g2_uint_t offset;            // current offset for the scrolling text
 u8g2_uint_t width;             // pixel width of the scrolling text (must be lesser than 128 unless U8G2_16BIT is defined
-const int string_length = 80; // maximum count of symbols in marquee
+const int string_length = 80;  // maximum count of symbols in marquee
 char text[string_length];      // text buffer to scroll
 
 // Wi-Fi
@@ -34,12 +61,16 @@ const long data_retrieve_delay = 300000;
 const int cycle_delay = 5;
 unsigned long last_measurement = 0;
 
+// Reboot timeout
+const unsigned long reboot_timeout = 8 * 3600000;  // once per 8 hours
+
 
 void setup(void) 
 {
     Serial.begin(9600);
     init_OLED();
     init_RTC();
+    init_WiFi();
 }
 
 
@@ -122,13 +153,13 @@ String get_data()
     String payload = "Data retrieve error";
     while (http_code != 200)
     {
-        http.begin(api_url); // connect to request destination
-        http_code = http.GET();                                    // send the request
-        String answer = http.getString();                        // get response payload
-        http.end();                                                // close connection    
+        http.begin(api_url);               // connect to request destination
+        http_code = http.GET();            // send the request
+        String answer = http.getString();  // get response payload
+        http.end();                        // close connection
         
         #ifdef DEBUG
-        Serial.println(http_code);  //Print HTTP return code
+        Serial.println(http_code);         // print HTTP return code
         #endif
 
         retries++;
@@ -136,7 +167,7 @@ String get_data()
         {
             break;
             #ifdef DEBUG
-            Serial.println("Couldn't get te data!");
+            Serial.println("Couldn't get the data!");
             #endif
         }
                 
@@ -192,7 +223,7 @@ void loop(void)
     
         u8g2.setFont(u8g2_font_inb30_mr);       // choose big font for clock
         u8g2.setCursor(0, 30);                  // set position of clock
-        char buf[8];                            // init bufer to formatted string
+        char buf[8];                            // init buffer to formatted string
         sprintf_P(buf, PSTR("%02d:%02d"), myRTC.hours, myRTC.minutes); // format clock with leading zeros
         u8g2.print(buf);                        // display clock
     } while (u8g2.nextPage());
@@ -203,4 +234,8 @@ void loop(void)
         offset = 0;                  // start over again
     }  
     delay(cycle_delay);              // do some small delay
+    if millis() > reboot_timeout
+    {
+        ESP.restart();
+    }
 }
