@@ -79,12 +79,14 @@ void setup()
      init_WiFi();
 }
 
+
 void loop()
 {
     #ifdef DEBUG
     get_serial_data();
     #endif
     post_data();
+    disconnect_WiFi();
     if millis() > reboot_timeout
     {
         ESP.restart();
@@ -92,7 +94,9 @@ void loop()
     delay(cooldown);
 }
 
+
 /* Init functions */
+
 void init_WiFi()
 {
     connect_to_WiFi();
@@ -100,6 +104,7 @@ void init_WiFi()
     Serial.println("Init WiFi OK");
     #endif
 }
+
 
 void init_BME()
 {
@@ -138,6 +143,15 @@ void connect_to_WiFi()
    #endif
 }
 
+
+void disconnect_WiFi()
+{
+    WiFi.disconnect();
+    WiFi.softAPdisconnect();
+    WiFi.mode(WIFI_OFF);
+}
+
+
 void check_connection()
 {
     if (WiFi.status() != WL_CONNECTED)
@@ -153,6 +167,14 @@ void check_connection()
         Serial.println("Network stable");
         #endif
     }
+}
+
+
+void disconnect_WiFi()
+{
+    WiFi.disconnect();
+    WiFi.softAPdisconnect();
+    WiFi.mode(WIFI_OFF);
 }
 
 
@@ -203,12 +225,14 @@ float get_temperature()
     return temp_event.temperature + correction_temperature;
 }
 
+
 float get_pressure()
 {
     sensors_event_t pressure_event;
     bme_pressure->getEvent(&pressure_event);
     return (pressure_event.pressure/1.3333 + correction_pressure);
 }
+
 
 float get_humidity()
 {
@@ -226,6 +250,7 @@ float get_humidity()
     return humidity;
 }
 
+
 float get_dew_point()
 {
     float dp;
@@ -235,6 +260,7 @@ float get_dew_point()
 
     return dp;
 }
+
 
 /* Format functions */
 
@@ -248,6 +274,7 @@ String get_csv_data()
     ret_string += ',0.0,0.0';  // fill with zeros UV and rain sensor values
     return ret_string;
 }
+
 
 #ifdef DEBUG
 void get_serial_data()

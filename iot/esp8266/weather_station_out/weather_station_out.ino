@@ -27,7 +27,8 @@
 
 #define DEBUG
 #define RAIN_SENSOR
-//#define UV_SENSOR
+//#define UV_ANALOG_SENSOR
+#define UV_I2C_SENSOR
 
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
@@ -35,6 +36,9 @@
 #include <SPI.h>
 #include <Adafruit_BME280.h>
 #include <Arduino_JSON.h>
+#include <Adafruit_VEML6070.h>
+
+
 
 
 // Sensor globals
@@ -47,8 +51,12 @@ float correction_pressure = 14;       // calibration addition for pressure
 float correction_humidity = 0;        // calibration addition for humidity
 
 // UV sensor globals
-#ifdef UV_SENSOR
+#ifdef UV_ANALOG_SENSOR
 int UV_PIN = A0;
+#endif
+#ifdef UV_I2C_SENSOR
+Adafruit_VEML6070 uv = Adafruit_VEML6070();
+#define VEML6070_ADDR_L     (0x38) ///< Low address
 #endif
 
 // Rain sensor
@@ -58,7 +66,6 @@ const int RAIN_SENSOR_PIN = A0;
 
 // Format consts
 String delimiter = ",";
-
 
 // Device ID
 const String DEVICE_ID = "1";  // 0 is internal, 1 is external sensor
@@ -92,12 +99,14 @@ void setup()
      init_WiFi();
 }
 
+
 void loop()
 {
     #ifdef DEBUG
     get_serial_data();
     #endif
     post_data();
+    disconnect_WiFi()
     if millis() > reboot_timeout
     {
         ESP.restart();
@@ -105,7 +114,9 @@ void loop()
     delay(cooldown);
 }
 
+
 /* Init functions */
+
 void init_WiFi()
 {
     connect_to_WiFi();
@@ -113,6 +124,7 @@ void init_WiFi()
     Serial.println("Init WiFi OK");
     #endif
 }
+
 
 void init_BME()
 {
@@ -135,6 +147,7 @@ void init_UV_sensor()
 {
     pinMode(UV_PIN, INPUT);
 }
+
 
 void init_rain_sensor()
 {
@@ -161,6 +174,15 @@ void connect_to_WiFi()
    Serial.println(WiFi.localIP());
    #endif
 }
+
+
+void disconnect_WiFi()
+{
+    WiFi.disconnect();
+    WiFi.softAPdisconnect();
+    WiFi.mode(WIFI_OFF);
+}
+
 
 void check_connection()
 {
@@ -218,6 +240,7 @@ void post_data()
     }
 }
 
+
 /* BME functions */
 
 float get_temperature()
@@ -227,12 +250,14 @@ float get_temperature()
     return temp_event.temperature + correction_temperature;
 }
 
+
 float get_pressure()
 {
     sensors_event_t pressure_event;
     bme_pressure->getEvent(&pressure_event);
     return (pressure_event.pressure/1.3333 + correction_pressure);
 }
+
 
 float get_humidity()
 {
@@ -249,6 +274,7 @@ float get_humidity()
     }
     return humidity;
 }
+
 
 float get_dew_point()
 {
@@ -270,6 +296,15 @@ void get_uv_level()
 }
 #endif
 
+
+#ifdef UV_I2C_SENSOR
+void get_uv_level()
+{
+		return uv.readUV();
+}
+#endif
+
+
 #ifdef RAIN_SENSOR
 void get_rain_level()
 {
@@ -277,6 +312,7 @@ void get_rain_level()
     return rain_level;
 }
 #endif
+
 
 /* Format functions */
 
@@ -297,6 +333,7 @@ String get_csv_data()
     #endif
     return ret_string;
 }
+
 
 #ifdef DEBUG
 void get_serial_data()

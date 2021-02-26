@@ -121,6 +121,14 @@ void connect_to_WiFi()
 }
 
 
+void disconnect_WiFi()
+{
+    WiFi.disconnect();
+    WiFi.softAPdisconnect();
+    WiFi.mode(WIFI_OFF);
+}
+
+
 void check_connection()
 {
     if (WiFi.status() != WL_CONNECTED)
@@ -176,6 +184,7 @@ String get_data()
             payload = answer;
         }
     }
+    disconnect_WiFi();
     return payload;
 }
 
