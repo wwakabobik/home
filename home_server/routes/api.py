@@ -5,6 +5,7 @@ from flask import jsonify, request, abort
 
 from db.queries import store_weather_data
 from pages.weather_station.send_data import send_data, send_data_to_informer
+from pages.shared.tools import take_photo
 
 
 @app.route('/api/v1/send_data')
@@ -51,3 +52,8 @@ def store_wind_data():
 @app.route('/api/v1/get_weather_data', methods=['GET'])
 def store_wind_data():
     return send_data_to_informer()
+
+
+@app.route('/api/v1/capture_photo', methods=['GET'])
+def capture_photo():
+    return take_photo

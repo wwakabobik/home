@@ -8,6 +8,8 @@ from picamera import PiCamera
 from db.queries import data_update_period, get_last_series_measurement
 
 
+camera = PiCamera()
+
 units = {'temperature': '°C', 'humidity': '%', 'pressure': 'mm Hg', 'dew_point': '°C',
          'avg_voltage': 'V', 'avg_current': 'A', 'avg_power': 'W', 'avg_consumption': 'W/h',
          'avg_rps': 'rps', 'max_rps': 'rps', 'min_rps': 'rps',
@@ -142,8 +144,7 @@ def humidex(t, d):
 
 
 def take_photo():
-    camera = PiCamera()
-    camera.resolution = (1800, 1200)  # lower resolution to fit in 1mb limitation
+    camera.resolution = (1280, 720)  # lower resolution to fit in 1mb limitation
     camera.start_preview()
     sleep(5)
     image = f'{getcwd()}/camera/image_{int(time())}.jpg'

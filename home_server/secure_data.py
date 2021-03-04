@@ -25,3 +25,4 @@ narodmon_name =
 narodmon_owner =
 narodmon_mac =
 narodmon_api_key =
+narodmon_camera_key =
