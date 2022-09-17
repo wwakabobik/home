@@ -3,6 +3,7 @@
 This repo contains project of smart home.
 
 [![H.O.M.E.](https://img.youtube.com/vi/eQUUWfOznbs/0.jpg)](https://www.youtube.com/watch?v=eQUUWfOznbs)
+
 Detail article you can find on [Habr](https://habr.com/ru/post/543146/). 
 
 Home server based on Raspberry Pi (originally rev 1.0 B+).
